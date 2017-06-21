@@ -14,7 +14,7 @@ import (
 )
 
 // QemuImg is the version of qemu container
-const QemuImg = "linuxkit/qemu:17f052263d63c8a2b641ad91c589edcbb8a18c82"
+const QemuImg = "linuxkit/aarch64/qemu:47d8f0e7191e1b5bbb366fb80e9a0ee9ab2bd01d"
 
 // QemuConfig contains the config for Qemu
 type QemuConfig struct {
@@ -240,11 +240,11 @@ func buildQemuCmdline(config QemuConfig) (QemuConfig, []string) {
 	// Look for kvm device and enable for qemu if it exists
 	var err error
 	if _, err = os.Stat("/dev/kvm"); os.IsNotExist(err) {
-		qemuArgs = append(qemuArgs, "-machine", "q35")
+		qemuArgs = append(qemuArgs, "-machine", "virt")
 	} else {
 		config.KVM = true
 		qemuArgs = append(qemuArgs, "-enable-kvm")
-		qemuArgs = append(qemuArgs, "-machine", "q35,accel=kvm:tcg")
+		qemuArgs = append(qemuArgs, "-machine", "virt")
 	}
 
 	if config.DiskPath != "" {
